@@ -1,3 +1,7 @@
+#ifndef "scanner_h"
+#define "scanner_h"
+#endif
+
 #include "token.h"
 #include <vector>
 #include <fstream>
