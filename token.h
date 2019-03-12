@@ -1,5 +1,9 @@
 #include <string>
 
+#ifndef "token_h"
+#define "token_h"
+#endif
+
 struct token 
 {
 
