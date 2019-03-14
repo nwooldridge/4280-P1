@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include <vector>
 #include <string>
+#include "token.h"
+#include "scanner.h"
 
 using namespace std;
 
@@ -49,11 +51,8 @@ int main(int argc, char ** argv) {
 	for (int i = 0; i != lineArray.size(); i++) 
 		for (int j = 0; j != lineArray[i].length(); j++)
                 	textArray.push_back(lineArray[i][j]);
-       	
-
-       	for (int i = 0; i != textArray.size(); i++)
-        	cout << textArray[i] << " ";
-	
+      
+	vector<token> tokens = scanner(textArray);
 
 	return 0;
 

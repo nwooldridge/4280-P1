@@ -1,8 +1,8 @@
 #include <string>
 
-#ifndef "token_h"
-#define "token_h"
-#endif
+#ifndef TOKEN_H
+#define TOKEN_H
+
 
 struct token 
 {
@@ -11,4 +11,6 @@ struct token
 	std::string tokenInstance;
 	int lineNumber;
 
-;
+};
+
+#endif

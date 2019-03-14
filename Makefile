@@ -1,4 +1,4 @@
-C=g++
+CC=g++
 TARGET=P1
 OBJS=P1.o scanner.o
 

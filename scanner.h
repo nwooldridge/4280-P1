@@ -1,10 +1,9 @@
-#ifndef "scanner_h"
-#define "scanner_h"
+#ifndef SCANNER_H
+#define SCANNER_H
 #endif
 
 #include "token.h"
 #include <vector>
-#include <fstream>
 
-std::vector<token> scanner(vector<char>);
-static std::bool filter1(char);  
+static bool filter1(char);
+std::vector <token> scanner(std::vector<char>);  
