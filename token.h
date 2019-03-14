@@ -11,4 +11,4 @@ struct token
 	std::string tokenInstance;
 	int lineNumber;
 
-};
+;
