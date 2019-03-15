@@ -5,6 +5,7 @@
 
 using namespace std;
 
+//checks if character passed is an allowed operator
 bool filter1(char c) {
 	bool result = false;
 
@@ -20,12 +21,30 @@ bool filter1(char c) {
         return result;
 }
 
-void filter2(vector<token> tokens) {
+//Checks IDTokens for reserved keywords
+vector<token> filter2(vector<token> tokens) {
 
+	int amtOfKeywords = 12;
+	string keywords[] = {"Begin", "End", "Loop", "Void", "INT", "Return", "Read", "Output", "Program", "IFF", "Then", "Let"};
+
+	for (int i = 0; i < tokens.size(); i++) {
+		
+		if (tokens[i].tokenID == "IDToken") {
+
+			for (int j = 0; j < amtOfKeywords; j++) {
+				
+				if (tokens[i].tokenInstance == keywords[j]) {
+
+					tokens[i].tokenID = keywords[j] + "Token";			
+				}
+			}
+		}
+	}
 	
-
+	return tokens;	
 } 
 
+//takes in file parsed into character vector and generates a vector of tokens
 vector <token> scanner(vector<char> input) {
 	
 	vector <token> tokens;
@@ -36,14 +55,16 @@ vector <token> scanner(vector<char> input) {
 		{5,5,2,5,5,5},
 		{6,6,6,6,6,6}
 	};
-	int lineNum = 0;
+
+	int lineNum = 1;
+
 	for (int i = 0; i < input.size();) {	
 
 		int currentState = 0;
 		token t;
 
 		while ((i < input.size()) && (currentState < 4) && (currentState > -1)) {
-			
+				
 			if (currentState == 0) { //if currentState is 0, then lookahead is not used to determine next state
 				
 				if (isupper(input[i]))
@@ -56,11 +77,13 @@ vector <token> scanner(vector<char> input) {
 					currentState = table[currentState][3];
 				else if (isspace(input[i])) {
 					currentState = table[currentState][4];
+					if (input[i] == 10)
+						lineNum++;
 					i++;
 					continue;
 				}
 				else {
-					cout << "Character not in alphabet\n";
+					cout << "Character " << input[i] << " not in alphabet at line: " << lineNum << endl;
 					exit(EXIT_FAILURE);
 				}
 			}
@@ -110,15 +133,16 @@ vector <token> scanner(vector<char> input) {
 			}
 			else { //unallowed characters
 
-				cout << "Error " << (int) input[i + 1] << " at index " << i + 1 << " is not in allowed language.\n";
+				cout << "Error " << input[i + 1] << " is not in allowed language at line: " << lineNum << endl;
 				exit(EXIT_FAILURE);		
 			}
 		}
 		
+		//assigns tokenID to token		
 		switch (currentState) {
 			
 			case -1:
-				cout << "No token begins with lowercase letter.\n";
+				cout << "No token begins with lowercase letter (" << lineNum << ")\n";
 	                        exit(EXIT_FAILURE);
 				break;
 			case 4: 
@@ -132,15 +156,14 @@ vector <token> scanner(vector<char> input) {
 				break;
 		}
 		
+		t.lineNumber = lineNum; 	
+		
 		if (t.tokenInstance != "")
 			tokens.push_back(t);			
 
 	}
-	
-	for (int i = 0; i != tokens.size(); i++) {
-		cout << tokens[i].tokenInstance << " " << tokens[i].tokenID << endl;
-	}
-	cout << "Amount of tokens: " << tokens.size() << endl;
+		
+	tokens = filter2(tokens);
 
 	return tokens;	
 }

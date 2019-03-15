@@ -53,6 +53,9 @@ int main(int argc, char ** argv) {
                 	textArray.push_back(lineArray[i][j]);
       
 	vector<token> tokens = scanner(textArray);
+	
+	for (int i = 0; i < tokens.size(); i++)
+		cout << "TokenID: " << tokens[i].tokenID << "; TokenInstance: " << tokens[i].tokenInstance << "; Line Number: " << tokens[i].lineNumber << endl;
 
 	return 0;
 
