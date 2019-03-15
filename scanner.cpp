@@ -20,6 +20,12 @@ bool filter1(char c) {
         return result;
 }
 
+void filter2(vector<token> tokens) {
+
+	
+
+} 
+
 vector <token> scanner(vector<char> input) {
 	
 	vector <token> tokens;
@@ -38,9 +44,7 @@ vector <token> scanner(vector<char> input) {
 
 		while ((i < input.size()) && (currentState < 4) && (currentState > -1)) {
 			
-			cout << "character: " << input[i] << " value: " << (int) input[i] << endl;
-			
-			if (currentState == 0) {
+			if (currentState == 0) { //if currentState is 0, then lookahead is not used to determine next state
 				
 				if (isupper(input[i]))
 					currentState = table[currentState][0];
@@ -50,8 +54,11 @@ vector <token> scanner(vector<char> input) {
 					currentState = table[currentState][2];
 				else if (filter1(input[i]))	
 					currentState = table[currentState][3];
-				else if (isspace(input[i]))
+				else if (isspace(input[i])) {
 					currentState = table[currentState][4];
+					i++;
+					continue;
+				}
 				else {
 					cout << "Character not in alphabet\n";
 					exit(EXIT_FAILURE);
@@ -68,8 +75,6 @@ vector <token> scanner(vector<char> input) {
 				t.tokenInstance += input[i];
 				i++;
 			}		
-	
-			
 			else if (isupper(input[i + 1])) { //uppercase letters
 			
 				currentState = table[currentState][0];
@@ -98,8 +103,9 @@ vector <token> scanner(vector<char> input) {
 				
 				if (input[i] == 10) //newline character
 					lineNum++;
-	
+				
 				currentState = table[currentState][4];
+				t.tokenInstance += input[i];
 				i++;
 			}
 			else { //unallowed characters
@@ -125,16 +131,16 @@ vector <token> scanner(vector<char> input) {
 				t.tokenID = "operatorToken";
 				break;
 		}
+		
+		if (t.tokenInstance != "")
+			tokens.push_back(t);			
 
-		tokens.push_back(t);			
-		cout << "Token created\n";
 	}
 	
 	for (int i = 0; i != tokens.size(); i++) {
-		for (int j = 0; j != tokens[i].tokenInstance.size(); j++)
-			cout << (int) tokens[i].tokenInstance[j] << endl;
-		cout << endl;
+		cout << tokens[i].tokenInstance << " " << tokens[i].tokenID << endl;
 	}
+	cout << "Amount of tokens: " << tokens.size() << endl;
 
 	return tokens;	
 }
