@@ -162,6 +162,12 @@ vector <token> scanner(vector<char> input) {
 			tokens.push_back(t);			
 
 	}
+	token eof;
+	eof.tokenInstance = "EOF";
+	eof.tokenID = "EOFToken";
+	eof.lineNumber = lineNum - 1;
+	
+	tokens.push_back(eof);	
 		
 	tokens = filter2(tokens);
 
